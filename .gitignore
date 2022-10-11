@@ -1,9 +1,8 @@
-./.config
-./.git
-./venv
-./todoignore
-./.replit
-./replit.nix
-./.upm
-./poetry.lock
-./pyproject.toml
+.config
+.git
+venv
+.replit
+replit.nix
+.upm
+poetry.lock
+pyproject.toml
