@@ -8,7 +8,6 @@ parser.add_argument('-i', '--inbox', type=str)
 parser.add_argument('-exp', '--expression-type', choices=('regex','glob'), required=True, type=str)
 parser.add_argument('--debug', action='store_true')
 args = parser.parse_args()
-print(args)
 
 def isMatch(exp, str, expType=args.expression_type):
   if expType == 'regex':
@@ -19,8 +18,9 @@ def isMatch(exp, str, expType=args.expression_type):
     except re.error:
       logging.warning(f"Regexp - {exp} considered invalid expression")
   elif expType == 'glob':
-      if str in glob.glob(exp):
-        return True
+      for globdir in glob.glob(exp):
+        if os.path.samefile(str, globdir):
+            return True
 
   if args.debug:
     logging.debug(f"Match not found in {str} with expression {exp} (type: {expType})")
@@ -62,7 +62,7 @@ except FileNotFoundError:
 with open(todo_dir, "at") as todoAppend:
   for filedir in glob.glob(inbox_dir + "*"):
       filename = os.path.basename(filedir)
-      if isMatch(todo_dir,filedir,'glob') or isMatch(args.yaml,filename,'glob') or isMatch(__file__,filedir,'glob'):
+      if isMatch(todo_dir,filedir,'glob') or isMatch(args.yaml,filename,'glob') or isMatch(__file__,filedir,'glob') or not os.path.isfile(filedir):
         continue
       if filename not in todoInitialContents:
         ignored = False
