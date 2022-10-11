@@ -7,16 +7,8 @@ inbox_dir: './'
 #Place glob/regex expressions in single quotes.
 
 ignore:
-    - ./.config
-    - ./.git
-    - ./venv
-    - ./todoignore
-    - ./.replit
-    - ./replit.nix
-    - ./.upm
-    - ./poetry.lock
-    - ./pyproject.toml
-    - ./README.md
+    #Ignore files here.
+    - ./gitignore
 
 projects:
   e-books:
