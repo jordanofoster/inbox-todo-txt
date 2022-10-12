@@ -6,6 +6,7 @@ parser.add_argument('yaml', type=str)
 parser.add_argument('-td', '--todo', type=str)
 parser.add_argument('-i', '--inbox', type=str)
 parser.add_argument('-exp', '--expression-type', choices=('regex','glob'), required=True, type=str)
+parser.add_argument('-ncd', '--no-created-date', action='store_true')
 parser.add_argument('--debug', action='store_true')
 args = parser.parse_args()
 
@@ -58,7 +59,7 @@ try:
     todoInitialContents = todoDump.read()
 except FileNotFoundError:
   todoInitialContents = ""
-  
+
 with open(todo_dir, "at") as todoAppend:
   for filedir in glob.glob(inbox_dir + "*"):
       filename = os.path.basename(filedir)
@@ -76,6 +77,19 @@ with open(todo_dir, "at") as todoAppend:
 
           outputStr = ""
           
+          priorityStr = ""
+          for priority,expList in yamlContents['priorities'].items():
+            if not isMatch(r'[A-Z]',priority,expType='regex'):
+              logging.warning(f"Priority - invalid value {priority} (expected A-Z)")
+              continue
+            else:
+              for exp in expList:
+                if isMatch(exp,filename):
+                  if (priorityStr == "") or (ascii(priority) < ascii(priorityStr[1])):
+                    #If we have a higher character (descending)
+                    priorityStr = f"({priority})"
+                  break
+
           projectsStr = ""
           for project,expList in yamlContents['projects'].items():
             for exp in expList:
@@ -94,9 +108,17 @@ with open(todo_dir, "at") as todoAppend:
                 contextsStr += f"@{context}"
                 break
           
-          outputStr = f"{datetime.now().strftime('%G-%m-%d')} {filename}"
+          if priorityStr != "":
+            outputStr = priorityStr + " "
+          
+          if not args.no_created_date:
+            outputStr += f"{datetime.now().strftime('%G-%m-%d')}" + " "
+
+          outputStr += filename
+
           if projectsStr != "":
             outputStr += " " + projectsStr
+          
           if contextsStr != "":
             outputStr += " " + contextsStr
 
