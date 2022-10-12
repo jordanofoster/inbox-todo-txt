@@ -38,6 +38,12 @@ Optionally:
 ignore:
   - ignore-this-file.please
 
+priorities:
+  A:
+    - important_doc.txt
+    - 'important-*.txt'
+    - '^(important)-[a-z].txt$'
+    
 projects:
   example-project:
     - project-file-1.txt
@@ -75,7 +81,6 @@ contexts:
 ## Further work
 
 - Find some way to allow Regex/Glob patterns to coexist in the same YAML file.
-- Allow the definition of priorities:
 
 ```yaml
 priorities:
