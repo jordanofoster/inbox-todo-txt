@@ -89,17 +89,6 @@ contexts:
 ## Further work
 
 - Find some way to allow Regex/Glob patterns to coexist in the same YAML file.
-
-```yaml
-priorities:
-  A:
-    - really-important-file.docx
-  B:
-    - less-important-file.tex
-  F:
-    - sunday-reading.pdf
-```
-  
 - Allow for 'catchall' entries that are other priorities/contexts/projects through prefixes; for example:
 
 ```yaml
