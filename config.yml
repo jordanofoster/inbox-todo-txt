@@ -10,11 +10,20 @@ ignore:
     #Ignore files here.
     - ./gitignore
 
+priorities:
+    #Priorities must fit [A-Z], but can otherwise be in any order.
+    #If there are mulitple matches present, the highest priority matched will be added.
+    Z:
+      - '*.zotero'
+    C:
+      - '*.calibre'
+    
 projects:
   e-books:
     - '*.epub'
   articles:
     - '*.html'
+
 contexts:
   home:
     - '*.docx'
