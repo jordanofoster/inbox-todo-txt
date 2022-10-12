@@ -68,13 +68,21 @@ contexts:
     - The script itself (`__file__`)
 
     1. Check if it has been ignored. If so, skip.
-    2. For each project listed in the YAML config:
+    2. For each priority listed in the YAML config:
+      - If invalid priority, (`not re.match(r'[A-Z]')`) log to stdout.
+      - Check each expression according to `--exp`.
+        - Log invalid regexp (`re.error`) to stdout.
+        - If the current file matches any patterns listed:
+          - If the file has no current priority OR the matched priority is higher:
+            - Replace the constructed string with `([priority])`.
+        
+    3. For each project listed in the YAML config:
 
        - Check each expression according to `--exp`.
          - Log invalid regexp (`re.error`) to stdout.
          - If the current file matches any patterns listed, add `+[project]` to the constructed string and go to the next project listed.
-    3. Do the same for each context listed in the YAML config.
-    4. Write a line to the todo file in the following format:
+    4. Do the same for each context listed in the YAML config.
+    5. Write a line to the todo file in the following format:
 
        `[current date, YYYY-MM-DD] filename [projects] [contexts]`
 
