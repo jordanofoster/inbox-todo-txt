@@ -53,9 +53,9 @@ if args.inbox == None:
   except KeyError as ke:
     logging.critical(ke)
     exit(1)
-
-try:
-  with open
+else:
+  inbox_dir = args.inbox
+  
 try:
   with open(todo_dir, "rt") as todoDump:
     todoInitialContents = todoDump.read()
